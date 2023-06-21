@@ -5,15 +5,14 @@ const auth = (req, res, next)=>{
 
     try {
 
-        let token = req.headers.authorization;
-        if(token){
-            token = token.split(" ")[1];
-            let user = jwt.verify(token, SECRET_KEY );
-            req.userId = user.id;
-        }
-        else{
-            return res.status(401).json({message: "Unauthorized User"});
-        }
+
+        console.log("---auth--- ",  req.headers.authorization )
+    if(!req.headers.authorization || req.headers.authorization === "null"  ) {
+        return res.status(200)
+        .json({ 
+            redirect: true
+        })
+    }
 
         next();
         

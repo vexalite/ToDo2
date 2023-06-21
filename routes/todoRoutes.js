@@ -2,6 +2,7 @@ const express = require("express");
 const { getTodo, createTodo, deleteTodo, updateTodo } = require("../controllers/todoController");
 const auth = require("../middlewares/auth");
 const todoRouter = express.Router();
+const jwt = require("jsonwebtoken");
 
 todoRouter.get("/", auth, getTodo);
 

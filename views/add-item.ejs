@@ -34,15 +34,14 @@
     <script>
             document.getElementById("todoAddTodoForm").addEventListener("submit", function(event){
                 event.preventDefault()
-                console.log("submittig");
-
+                
                 const title = document.getElementById("title").value
                 const description = document.getElementById("description").value
                 
                 const body = {
                     title,
                     description,
-                    completed: Done.checked ? true : false 
+                    // completed: Done.checked ? true : false 
                 }
 
                 let token = localStorage.getItem("token")
