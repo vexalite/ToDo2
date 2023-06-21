@@ -3,24 +3,24 @@
 <%- include("partials/header")  %>
 <div class="container mb-6 p-6 items-center">
                     
-                        
                     <h1 class="font-bold text-3xl mb-6">Edit Todo Item</h1>
-                 
+                    
                         <div class="container">
                             <form id="todoUpdateForm">
                                 <div class="mb-6">
                                     <label for="title" class="block mb-2 text-sm font-medium text-gray-900 ">Update Title</label>
-                                    <input type="text" id="title"  class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 ">
+                                    <input type="text"  id="title"  class="block w-full p-4 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 sm:text-md focus:ring-blue-500 focus:border-blue-500 ">
                                 </div>
                                 <div class="mb-6">
                                     <label for="description" class="block mb-2 text-sm font-medium text-gray-900 ">Update Description</label>
-                                    <input type="text" id="description"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
+                                    <input type="text" id="description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ">
                                 </div>
                                 <fieldset>
                                     <legend class="sr-only">status</legend>
                                   
                                     <div class="flex items-center mb-4">
                                       <input id="Done" type="radio" name="countries" value="USA" class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 " checked>
+                                      
                                       <label for="country-option-1" class="block ml-2 text-sm font-medium text-gray-900 ">
                                         Task Completed
                                       </label>
@@ -28,6 +28,7 @@
                                   
                                     <div class="flex items-center mb-4">
                                       <input id="NotDone" type="radio" name="countries" value="Germany" class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 ">
+                                      
                                       <label for="country-option-2" class="block ml-2 text-sm font-medium text-gray-900 ">
                                         Task Incomplete
                                       </label>
@@ -44,74 +45,47 @@
                         
                             <h1>Not found</h1>
                             <a href="/todo/add" class="my-1 btn btn-primary">Try adding a new todo...</a>
-                        
+                            
                 </div>
             </div>
         </div>
     </div>
         <script>
+            
             document.getElementById("todoUpdateForm").addEventListener("submit", function(event){
                 event.preventDefault()
                 console.log("submittig");
 
                 const title = document.getElementById("title").value
                 const description = document.getElementById("description").value
-                // const completedDone = document.getElementById("Done")
-
-                // for protected route purpose:
+                
                 let token = localStorage.getItem("token")
 
-                // console.log("checkbox is ", completedDone.checked);
-                // console.log("checkbox is ", title.value);
                 const body = {
                     title,
-                    description,
-                    // completed: Done.checked ? true : false 
+                    description
+                    // completed : Done.checked ? true : false 
                 }
 
-                // fetch(`http://localhost:3000/api/todos/${title}`, {
-                fetch(`/todo/${todos.title}`, {
+
+                fetch(`/todo/${id}`, {
                     method: "PUT",
-                    // without header the request payload will be [object Object]
+                    
                     headers: {
                         "Accept" : "application/json",
                         "Content-type": "application/json",
-                        // sending a custom key value in the headers to check it via the middleware isAuthenticated
-                        // Authorization = authorization... it is lower cased internally
                         "Authorization": token
                     },
                     body: JSON.stringify(body)
                 })
-                // fetch is a promise so need to resolve it
-                // .then((response)=>{
-                //     // console.log("PUT Response = ", response.status);
-                //     // alert(response.body)
-                //     response.json()
-                // })
-                .then((response) => {
-                    console.log("---Token respone---", token, response.status);
-
-                    return response.json()
-                    .then((data) => {
-                        if(data.redirect){
-                            alert("You are not logged in. So redirecting you to the login page")
-                            window.location.href = "/auth/login"
-                            return
-                        }
-                        if(data.error){
-                            const errorString = JSON.stringify(daa.error)
-                        }
-                        // successful update
-                        else{
-                            alert(data.message)
-
-                            // to reload the page to show the changes made on update as this is not react app
-                            location.reload()
-                        }
-                    })
+                .then((response)=>{
+                    console.log("PUT Response = ", response.status);
+                    alert(response.body)
+                    response.json()
                 })
-                // .then((response) => response.json())
-                // .then((data) => alert(data.message))
+                .then(body => {
+         console.log('Updated todo:', body);
+       })
                 .catch((error)=> alert(error.toString()))
             })
 
@@ -119,7 +93,7 @@
 
                 let token = localStorage.getItem("access_token")
 
-                fetch(`/todos/${todo_title}`, {
+                fetch(`/todos/${id}`, {
                     method: "DELETE",
                     headers: {
                         "authorization": token
@@ -129,17 +103,14 @@
                     return response.json()
                     .then((data) => {
 
-                        // if for some reason the user deletes localStorage variable and is on the todo page with access to delete button
                         if(data.redirect){
                             alert("You are not logged in. So redirecting you to the login page")
                             window.location.href = "/auth/login"
                             return
                         }
 
-                        // console.log("Delete msg : ", JSON.stringify(data));
                         alert(data.message)
 
-                        // taking the user back to the home page so that he cannot update the deleted data as on web page the data still persists and doest change due to not being a react app
                         window.location.href = "/"
                     })
                 })

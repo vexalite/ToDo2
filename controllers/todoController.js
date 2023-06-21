@@ -17,15 +17,16 @@ const createTodo = async (req, res) =>{
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: "Something went wrong"});
+        res.status(500).json({message: "Failed to create"});
     }
     
 }
 
 const updateTodo = async (req, res) =>{
     // const id = req.params.id;
-    const title = req.params.title;
-    const { description, completed} = req.body;
+    // const title = req.params.title;
+    const { id } = req.params.id;
+    const { title, description, completed} = req.body;
 
     const newTodo = {
         title : title,
@@ -34,12 +35,12 @@ const updateTodo = async (req, res) =>{
     }
 
     try {
-        await todoModel.findByIdAndUpdate(title, newTodo, {new : true});
+        await todoModel.findByIdAndUpdate(id, newTodo, {new : true});
         res.status(200).json(newTodo);
         
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: "Something went wrong"});
+        res.status(500).json({message: "Failed to update"});
     }
 
 }
@@ -54,7 +55,7 @@ const deleteTodo = async (req, res) =>{
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: "Something went wrong"});
+        res.status(500).json({message: "Failed to delete"});
     }
 }
 
@@ -66,7 +67,7 @@ const getTodo = async (req, res) =>{
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: "Something went wrong"});
+        res.status(500).json({message: "Failed to get"});
     }
 }
 

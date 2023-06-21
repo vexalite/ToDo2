@@ -42,7 +42,7 @@
                 const body = {
                     title,
                     description,
-                    // completed: Done.checked ? true : false 
+                    completed: Done.checked ? true : false 
                 }
 
                 let token = localStorage.getItem("token")
@@ -56,13 +56,10 @@
                     },
                     body: JSON.stringify(body)
                 })
-                // fetch is a promise so need to resolve it
                 .then((response) => {
                     console.log("---Token respone---", token, response.status);
                     return response.json()
                     window.location.href = "/"
-
-                    // this then block is for response.json() which is a promise
                     .then((data) => {
                         if(data.redirect){
                             alert("You are not logged in. So redirecting you to the login page")

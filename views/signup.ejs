@@ -55,18 +55,15 @@
                     email,
                     password
                 }
-
-                // fetch(`http://localhost:3000/api/v1/auth`, {
                 fetch(`/users/signup`, {
                     method: "POST",
-                    // without header the request payload will be [object Object]
+                    
                     headers: {
                         "Accept" : "application/json",
                         "Content-type": "application/json"
                     },
                     body: JSON.stringify(body)
                 })
-                // fetch is a promise so need to resolve it
                 .then((response) => response.json())
                 .then((data) => {
                     if(data.error){
@@ -78,7 +75,6 @@
                         // localStorage.setItem("username", data.data.user.username)
 
                         alert("Welcome,  " + JSON.stringify(data.user.username))
-                        // document.getElementById("logout").classList.remove("d-none")
                         window.location.href = "/"
                     }
                 })
